@@ -37,7 +37,7 @@ bool RPiVideoGrabber::initGrabber(int w, int h)
     videoGrabber.setup(omxCameraSettings);
     videoGrabber.enablePixels();
     
-    pixels.setFromExternalPixels((unsigned char *)videoGrabber.getPixels(), cameraWidth, cameraHeight, OF_PIXELS_RGBA);
+    pixels.setFromExternalPixels((unsigned char *)videoGrabber.getPixels(), cameraWidth, cameraHeight, OF_PIXELS_RGB);
 
     didInit = true;
     return didInit;
@@ -95,7 +95,7 @@ bool RPiVideoGrabber::isInitialized() const
 
 bool RPiVideoGrabber::setPixelFormat(ofPixelFormat pixelFormat)
 {
-    if (pixelFormat == OF_PIXELS_RGBA) 
+    if (pixelFormat == OF_PIXELS_RGB) 
     {
         return true;
     }

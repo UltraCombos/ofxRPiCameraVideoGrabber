@@ -84,9 +84,9 @@ void TextureEngine::updatePixels()
 	
 	if (!fbo.isAllocated()) 
 	{
-		fbo.allocate(omxCameraSettings.width, omxCameraSettings.height, GL_RGBA);
+		fbo.allocate(omxCameraSettings.width, omxCameraSettings.height, GL_RGB);
 	}
-	int dataSize = omxCameraSettings.width * omxCameraSettings.height * 4;
+	int dataSize = omxCameraSettings.width * omxCameraSettings.height * 3;
 	if (pixels == NULL)
 	{
 		pixels = new unsigned char[dataSize];
@@ -94,7 +94,7 @@ void TextureEngine::updatePixels()
 	fbo.begin();
 		ofClear(0, 0, 0, 0);
 		texture.draw(0, 0);
-		glReadPixels(0,0, omxCameraSettings.width, omxCameraSettings.height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);	
+		glReadPixels(0,0, omxCameraSettings.width, omxCameraSettings.height, GL_RGB, GL_UNSIGNED_BYTE, pixels);	
 	fbo.end();
 }
 
@@ -112,7 +112,7 @@ void TextureEngine::generateEGLImage()
 	context = appEGLWindow->getEglContext();
 	
 	
-	texture.allocate(omxCameraSettings.width, omxCameraSettings.height, GL_RGBA);
+	texture.allocate(omxCameraSettings.width, omxCameraSettings.height, GL_RGB);
 	//texture.getTextureData().bFlipTexture = true;
 	
 	texture.setTextureWrap(GL_REPEAT, GL_REPEAT);
@@ -121,7 +121,7 @@ void TextureEngine::generateEGLImage()
 	glEnable(GL_TEXTURE_2D);
 	
 	// setup first texture
-	int dataSize = omxCameraSettings.width * omxCameraSettings.height * 4;
+	int dataSize = omxCameraSettings.width * omxCameraSettings.height * 3;
 	
 	GLubyte* pixelData = new GLubyte [dataSize];
 	
@@ -129,8 +129,8 @@ void TextureEngine::generateEGLImage()
     memset(pixelData, 0xff, dataSize);  // white texture, opaque
 	
 	glBindTexture(GL_TEXTURE_2D, textureID);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, omxCameraSettings.width, omxCameraSettings.height, 0,
-				 GL_RGBA, GL_UNSIGNED_BYTE, pixelData);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, omxCameraSettings.width, omxCameraSettings.height, 0,
+				 GL_RGB, GL_UNSIGNED_BYTE, pixelData);
 	
 	delete[] pixelData;
 	
