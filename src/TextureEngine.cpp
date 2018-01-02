@@ -118,7 +118,10 @@ void TextureEngine::generateEGLImage()
 	texture.setTextureWrap(GL_REPEAT, GL_REPEAT);
     GLuint textureID = texture.getTextureData().textureID;
 	
-	glEnable(GL_TEXTURE_2D);
+	if (!ofIsGLProgrammableRenderer())
+	{	
+		glEnable(GL_TEXTURE_2D);
+	}
 	
 	// setup first texture
 	int dataSize = omxCameraSettings.width * omxCameraSettings.height * 3;
@@ -142,7 +145,12 @@ void TextureEngine::generateEGLImage()
 								 EGL_GL_TEXTURE_2D_KHR,
 								 (EGLClientBuffer)textureID,
 								 0);
-    glDisable(GL_TEXTURE_2D);
+								 
+	if (!ofIsGLProgrammableRenderer())
+	{								 
+		glDisable(GL_TEXTURE_2D);
+	}
+		
 	if (eglImage == EGL_NO_IMAGE_KHR)
 	{
 		ofLogError()	<< "Create EGLImage FAIL";
@@ -151,6 +159,11 @@ void TextureEngine::generateEGLImage()
 	else
 	{
 		ofLogVerbose(__func__)	<< "Create EGLImage PASS";
+	}
+	
+	if (glGetError() != GL_NO_ERROR)
+	{
+		ofLogError(__func__)	<< "gGetError() != GL_NO_ERROR";
 	}
 }
 
